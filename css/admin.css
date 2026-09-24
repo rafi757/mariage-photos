@@ -1,0 +1,46 @@
+.header-small {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: var(--primary-dark);
+  text-align: center;
+}
+
+.error-msg {
+  color: #c62828;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.admin-grid {
+  margin-top: 16px;
+}
+
+.admin-grid .photo-item {
+  position: relative;
+}
+
+.admin-grid .download-single {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.zip-progress {
+  text-align: center;
+  margin-top: 10px;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}

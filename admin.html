@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Admin — Photos du mariage</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/galerie.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <main class="container">
+
+    <section id="loginScreen" class="upload-card">
+      <h1 class="header-small">Accès admin</h1>
+      <input type="password" id="passwordInput" class="input-nom" placeholder="Mot de passe">
+      <button id="loginBtn" class="btn-send">Entrer</button>
+      <p id="loginError" class="error-msg" hidden>Mot de passe incorrect</p>
+    </section>
+
+    <section id="adminScreen" hidden>
+      <header class="header">
+        <h1>Toutes les photos 🔐</h1>
+        <p class="subtitle" id="countText">Chargement...</p>
+      </header>
+
+      <button id="downloadAllBtn" class="btn-send">📦 Télécharger toutes les photos (.zip)</button>
+      <p id="zipProgress" class="zip-progress" hidden></p>
+
+      <div id="adminGrid" class="galerie-grid admin-grid"></div>
+    </section>
+
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
