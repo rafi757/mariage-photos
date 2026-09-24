@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Galerie 💍</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/galerie.css">
+</head>
+<body>
+
+  <main class="container">
+    <header class="header">
+      <h1>La galerie 📷</h1>
+      <p class="subtitle">Toutes les photos envoyées par les invités</p>
+    </header>
+
+    <div id="galerieGrid" class="galerie-grid"></div>
+
+    <p id="emptyMsg" class="empty-msg" hidden>
+      Aucune photo pour le moment. Soyez le premier à en envoyer !
+    </p>
+
+    <button id="loadMoreBtn" class="btn-loadmore" hidden>Voir plus de photos</button>
+
+    <a href="index.html" class="link-galerie">← Envoyer des photos</a>
+  </main>
+
+  <div id="lightbox" class="lightbox" hidden>
+    <button id="lightboxClose" class="lightbox-close">✕</button>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="">
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/galerie.js"></script>
+</body>
+</html>

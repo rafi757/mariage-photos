@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Envoyez vos photos 💍</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main class="container">
+    <header class="header">
+      <h1>Notre mariage 💍</h1>
+      <p class="subtitle">Partagez les photos que vous avez prises de nous ce jour-là !</p>
+    </header>
+
+    <section class="upload-card">
+      <label for="fileInput" class="upload-zone" id="uploadZone">
+        <span class="upload-icon">📸</span>
+        <span class="upload-text">Touchez pour choisir ou prendre des photos</span>
+        <span class="upload-hint">Vous pouvez en sélectionner plusieurs</span>
+      </label>
+      <input
+        type="file"
+        id="fileInput"
+        accept="image/*"
+        multiple
+        hidden
+      >
+
+      <div id="previewGrid" class="preview-grid"></div>
+
+      <input
+        type="text"
+        id="nomInvite"
+        class="input-nom"
+        placeholder="Votre nom (optionnel)"
+      >
+
+      <button id="sendBtn" class="btn-send" disabled>Envoyer les photos</button>
+
+      <div id="progressWrap" class="progress-wrap" hidden>
+        <div id="progressBar" class="progress-bar"></div>
+        <span id="progressText" class="progress-text">0%</span>
+      </div>
+
+      <div id="successMsg" class="success-msg" hidden>
+        ✅ Merci ! Vos photos ont bien été envoyées.
+      </div>
+    </section>
+
+    <a href="galerie.html" class="link-galerie">Voir la galerie des photos →</a>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>
