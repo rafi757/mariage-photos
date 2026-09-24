@@ -90,9 +90,16 @@ async function loadMore() {
 
 // --- Lightbox : ouverture / fermeture / navigation ---
 
+function setPhotoContent(photo) {
+  lightboxImg.src = photo.url;
+  lightboxCounter.textContent = `${currentIndex + 1} / ${loadedPhotos.length}${noMoreToLoad ? "" : "+"}`;
+}
+
 function openLightbox(index) {
   currentIndex = index;
-  showCurrentPhoto();
+  const photo = loadedPhotos[currentIndex];
+  if (!photo) return;
+  setPhotoContent(photo);
   lightbox.hidden = false;
   // On pousse un état dans l'historique pour pouvoir intercepter
   // le bouton "retour" du téléphone (voir écouteur popstate plus bas).
@@ -140,14 +147,19 @@ async function showPhoto(index) {
   }
 
   currentIndex = index;
-  showCurrentPhoto();
+  transitionToPhoto(loadedPhotos[currentIndex]);
 }
 
-function showCurrentPhoto() {
-  const photo = loadedPhotos[currentIndex];
-  if (!photo) return;
-  lightboxImg.src = photo.url;
-  lightboxCounter.textContent = `${currentIndex + 1} / ${loadedPhotos.length}${noMoreToLoad ? "" : "+"}`;
+function transitionToPhoto(photo) {
+  // Petit fondu de sortie, puis on change l'image, puis fondu d'entrée
+  // une fois la nouvelle image chargée (évite un "flash" d'image vide).
+  lightboxImg.classList.add("is-changing");
+  setTimeout(() => {
+    setPhotoContent(photo);
+    lightboxImg.onload = () => {
+      requestAnimationFrame(() => lightboxImg.classList.remove("is-changing"));
+    };
+  }, 90);
 }
 
 // --- Swipe gauche / droite sur mobile ---
