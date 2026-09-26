@@ -3,7 +3,7 @@
 // ⚠️ Mot de passe simple côté client — dissuasif seulement, pas une vraie
 // sécurité (site 100% statique, pas de serveur pour vérifier). Ne partage
 // jamais ce lien admin publiquement. Change cette valeur avant de déployer.
-const ADMIN_PASSWORD = "lcxchx";
+const ADMIN_PASSWORD = "changeMoi2026";
 
 const loginScreen = document.getElementById("loginScreen");
 const adminScreen = document.getElementById("adminScreen");
@@ -58,7 +58,7 @@ async function loadAllPhotos() {
   const limit = 100;
 
   while (true) {
-    const url = `${CONFIG.SUPABASE_URL}/rest/v1/photos?select=url,nom_invite,created_at&order=created_at.desc&offset=${offset}&limit=${limit}`;
+    const url = `${CONFIG.SUPABASE_URL}/rest/v1/photos?select=id,url,nom_invite,public_id,created_at&order=created_at.desc&offset=${offset}&limit=${limit}`;
     const res = await fetch(url, {
       headers: {
         "apikey": CONFIG.SUPABASE_KEY,
@@ -87,15 +87,32 @@ function renderGrid() {
     img.loading = "lazy";
     item.appendChild(img);
 
+    const actions = document.createElement("div");
+    actions.className = "photo-actions";
+
     const dlBtn = document.createElement("button");
     dlBtn.className = "download-single";
-    dlBtn.textContent = "⬇";
     dlBtn.type = "button";
+    dlBtn.textContent = "⬇";
+    dlBtn.title = "Télécharger";
     dlBtn.addEventListener("click", (e) => {
-      e.stopPropagation(); // ne pas ouvrir la lightbox en cliquant sur le bouton
+      e.stopPropagation();
       downloadSinglePhoto(photo, index, dlBtn);
     });
-    item.appendChild(dlBtn);
+    actions.appendChild(dlBtn);
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "delete-single";
+    delBtn.type = "button";
+    delBtn.textContent = "🗑️";
+    delBtn.title = "Supprimer";
+    delBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteSinglePhoto(photo, delBtn);
+    });
+    actions.appendChild(delBtn);
+
+    item.appendChild(actions);
 
     item.addEventListener("click", () => openLightbox(index));
 
@@ -165,6 +182,98 @@ async function downloadSinglePhoto(photo, index, btnEl) {
     btnEl.textContent = original;
   }
 }
+
+// --- Suppression d'une photo ---
+//
+// Supprime uniquement la ligne dans Supabase (donc la photo disparaît du
+// site : admin + galerie publique). Le fichier reste stocké chez Cloudinary
+// (suppression réelle impossible en toute sécurité depuis un site 100%
+// statique, ça nécessiterait la clé secrète). Le public_id est conservé
+// dans Supabase avant suppression de la ligne si jamais tu veux la
+// retrouver manuellement dans ta Media Library Cloudinary.
+async function deleteSinglePhoto(photo, btnEl) {
+  const confirmed = confirm("Supprimer définitivement cette photo du site ? Cette action est irréversible.");
+  if (!confirmed) return;
+
+  btnEl.disabled = true;
+  const original = btnEl.textContent;
+  btnEl.textContent = "…";
+
+  try {
+    const url = `${CONFIG.SUPABASE_URL}/rest/v1/photos?id=eq.${photo.id}`;
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "apikey": CONFIG.SUPABASE_KEY,
+        "Authorization": `Bearer ${CONFIG.SUPABASE_KEY}`,
+        "Prefer": "return=minimal"
+      }
+    });
+    if (!res.ok) throw new Error("Échec suppression");
+
+    allPhotos = allPhotos.filter((p) => p.id !== photo.id);
+    countText.textContent = `${allPhotos.length} photo(s) au total`;
+    renderGrid();
+  } catch (err) {
+    console.error("Erreur suppression photo:", err);
+    alert("Impossible de supprimer cette photo.");
+    btnEl.disabled = false;
+    btnEl.textContent = original;
+  }
+}
+
+// --- Suppression de toutes les photos ---
+
+const deleteAllBtn = document.getElementById("deleteAllBtn");
+const deleteProgress = document.getElementById("deleteProgress");
+
+deleteAllBtn.addEventListener("click", async () => {
+  if (allPhotos.length === 0) return;
+
+  const firstConfirm = confirm(
+    `Supprimer définitivement les ${allPhotos.length} photo(s) du site ? Cette action est irréversible.`
+  );
+  if (!firstConfirm) return;
+
+  const typed = prompt('Pour confirmer, tape SUPPRIMER en majuscules :');
+  if (typed !== "SUPPRIMER") {
+    alert("Suppression annulée.");
+    return;
+  }
+
+  deleteAllBtn.disabled = true;
+  downloadAllBtn.disabled = true;
+  deleteProgress.hidden = false;
+
+  let done = 0;
+  const total = allPhotos.length;
+
+  for (const photo of [...allPhotos]) {
+    try {
+      const url = `${CONFIG.SUPABASE_URL}/rest/v1/photos?id=eq.${photo.id}`;
+      await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "apikey": CONFIG.SUPABASE_KEY,
+          "Authorization": `Bearer ${CONFIG.SUPABASE_KEY}`,
+          "Prefer": "return=minimal"
+        }
+      });
+    } catch (err) {
+      console.error("Erreur suppression:", err);
+    }
+    done++;
+    deleteProgress.textContent = `Suppression... ${done}/${total}`;
+  }
+
+  allPhotos = [];
+  countText.textContent = "0 photo(s) au total";
+  renderGrid();
+
+  deleteProgress.textContent = "✅ Toutes les photos ont été supprimées";
+  deleteAllBtn.disabled = false;
+  downloadAllBtn.disabled = false;
+});
 
 // --- Téléchargement groupé en .zip ---
 

@@ -20,27 +20,63 @@
   position: relative;
 }
 
-.admin-grid .download-single {
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-danger {
+  width: 100%;
+  padding: 14px;
+  background: white;
+  color: #c62828;
+  border: 1px solid #c62828;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-danger:active {
+  background: rgba(198, 40, 40, 0.08);
+}
+
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-grid .photo-actions {
   position: absolute;
   top: 4px;
   right: 4px;
+  display: flex;
+  gap: 4px;
+  z-index: 2;
+}
+
+.admin-grid .photo-actions button {
   background: rgba(0, 0, 0, 0.55);
   color: white;
   border: none;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
 }
 
-.admin-grid .download-single:disabled {
+.admin-grid .photo-actions button:disabled {
   opacity: 0.6;
   cursor: wait;
+}
+
+.admin-grid .photo-actions .delete-single {
+  background: rgba(198, 40, 40, 0.75);
 }
 
 .zip-progress {

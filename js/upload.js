@@ -38,8 +38,8 @@ sendBtn.addEventListener("click", async () => {
   for (const file of selectedFiles) {
     try {
       const compressed = await compressImage(file);
-      const cloudinaryUrl = await uploadToCloudinary(compressed);
-      await saveToSupabase(cloudinaryUrl, nomInvite.value.trim());
+      const { url: cloudinaryUrl, publicId } = await uploadToCloudinary(compressed);
+      await saveToSupabase(cloudinaryUrl, nomInvite.value.trim(), publicId);
       uploaded++;
       updateProgress(uploaded, selectedFiles.length);
     } catch (err) {
@@ -111,10 +111,10 @@ async function uploadToCloudinary(file) {
   const res = await fetch(url, { method: "POST", body: formData });
   if (!res.ok) throw new Error("Échec upload Cloudinary");
   const data = await res.json();
-  return data.secure_url;
+  return { url: data.secure_url, publicId: data.public_id };
 }
 
-async function saveToSupabase(photoUrl, nom) {
+async function saveToSupabase(photoUrl, nom, publicId) {
   const url = `${CONFIG.SUPABASE_URL}/rest/v1/photos`;
   const res = await fetch(url, {
     method: "POST",
@@ -124,7 +124,7 @@ async function saveToSupabase(photoUrl, nom) {
       "Authorization": `Bearer ${CONFIG.SUPABASE_KEY}`,
       "Prefer": "return=minimal"
     },
-    body: JSON.stringify({ url: photoUrl, nom_invite: nom || null })
+    body: JSON.stringify({ url: photoUrl, nom_invite: nom || null, public_id: publicId || null })
   });
   if (!res.ok) throw new Error("Échec enregistrement Supabase");
 }

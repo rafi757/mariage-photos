@@ -25,8 +25,12 @@
         <p class="subtitle" id="countText">Chargement...</p>
       </header>
 
-      <button id="downloadAllBtn" class="btn-send">📦 Télécharger toutes les photos (.zip)</button>
+      <div class="admin-actions">
+        <button id="downloadAllBtn" class="btn-send">📦 Télécharger toutes les photos (.zip)</button>
+        <button id="deleteAllBtn" class="btn-danger">🗑️ Supprimer toutes les photos</button>
+      </div>
       <p id="zipProgress" class="zip-progress" hidden></p>
+      <p id="deleteProgress" class="zip-progress" hidden></p>
 
       <div id="adminGrid" class="galerie-grid admin-grid"></div>
     </section>
