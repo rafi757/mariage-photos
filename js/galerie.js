@@ -1,4 +1,4 @@
-// js/galerie.js
+
 
 const galerieGrid = document.getElementById("galerieGrid");
 const emptyMsg = document.getElementById("emptyMsg");
@@ -13,8 +13,6 @@ let currentOffset = 0;
 let isLoading = false;
 let noMoreToLoad = false;
 
-// Toutes les photos chargées jusqu'ici (across les pages), pour permettre
-// la navigation par swipe dans la lightbox.
 let loadedPhotos = [];
 let currentIndex = -1;
 
@@ -88,7 +86,6 @@ async function loadMore() {
   }
 }
 
-// --- Lightbox : ouverture / fermeture / navigation ---
 
 function setPhotoContent(photo) {
   lightboxImg.src = photo.url;
@@ -101,8 +98,7 @@ function openLightbox(index) {
   if (!photo) return;
   setPhotoContent(photo);
   lightbox.hidden = false;
-  // On pousse un état dans l'historique pour pouvoir intercepter
-  // le bouton "retour" du téléphone (voir écouteur popstate plus bas).
+  
   history.pushState({ lightboxOpen: true }, "");
 }
 
@@ -110,7 +106,6 @@ function closeLightbox(fromPopstate) {
   lightbox.hidden = true;
   lightboxImg.src = "";
   if (!fromPopstate) {
-    // Retire l'état qu'on avait ajouté, sans quitter la page.
     history.back();
   }
 }
@@ -121,15 +116,13 @@ lightbox.addEventListener("click", (e) => {
   if (e.target === lightbox) closeLightbox(false);
 });
 
-// Bouton retour du téléphone / navigateur : si la lightbox est ouverte,
-// on la ferme au lieu de quitter la galerie.
+
 window.addEventListener("popstate", () => {
   if (!lightbox.hidden) {
     closeLightbox(true);
   }
 });
 
-// Flèches clavier (pratique aussi sur ordinateur/tablette avec clavier)
 document.addEventListener("keydown", (e) => {
   if (lightbox.hidden) return;
   if (e.key === "ArrowRight") showPhoto(currentIndex + 1);
@@ -151,9 +144,7 @@ async function showPhoto(index) {
 }
 
 function transitionToPhoto(photo) {
-  // Petit fondu de sortie, puis on change l'image, puis fondu d'entrée
-  // une fois la nouvelle image chargée (évite un "flash" d'image vide).
-  lightboxImg.classList.add("is-changing");
+ lightboxImg.classList.add("is-changing");
   setTimeout(() => {
     setPhotoContent(photo);
     lightboxImg.onload = () => {
@@ -162,7 +153,6 @@ function transitionToPhoto(photo) {
   }, 90);
 }
 
-// --- Swipe gauche / droite sur mobile ---
 
 let touchStartX = null;
 let touchStartY = null;
@@ -179,13 +169,11 @@ lightbox.addEventListener("touchend", (e) => {
   const deltaY = e.changedTouches[0].clientY - touchStartY;
   const threshold = 50;
 
-  // On ignore si le geste est plus vertical qu'horizontal
-  // (évite de déclencher un swipe pendant un scroll).
-  if (Math.abs(deltaX) > threshold && Math.abs(deltaX) > Math.abs(deltaY)) {
+   if (Math.abs(deltaX) > threshold && Math.abs(deltaX) > Math.abs(deltaY)) {
     if (deltaX > 0) {
-      showPhoto(currentIndex - 1); // glissement vers la droite → photo précédente
+      showPhoto(currentIndex - 1); 
     } else {
-      showPhoto(currentIndex + 1); // glissement vers la gauche → photo suivante
+      showPhoto(currentIndex + 1); 
     }
   }
 

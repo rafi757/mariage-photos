@@ -1,4 +1,3 @@
-// js/upload.js
 
 const fileInput = document.getElementById("fileInput");
 const previewGrid = document.getElementById("previewGrid");
@@ -62,10 +61,6 @@ function updateProgress(done, total) {
   progressText.textContent = `${done}/${total}`;
 }
 
-// Réduit la résolution et compresse en JPEG avant l'envoi.
-// Corrige le crash "mémoire insuffisante" sur Android avec les photos
-// en pleine résolution (12+ mégapixels), et réduit la consommation
-// des crédits Cloudinary.
 function compressImage(file, maxWidth = 1920, quality = 0.8) {
   return new Promise((resolve, reject) => {
     const img = new Image();

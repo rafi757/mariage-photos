@@ -1,9 +1,5 @@
-// js/admin.js
 
-// ⚠️ Mot de passe simple côté client — dissuasif seulement, pas une vraie
-// sécurité (site 100% statique, pas de serveur pour vérifier). Ne partage
-// jamais ce lien admin publiquement. Change cette valeur avant de déployer.
-const ADMIN_PASSWORD = "changeMoi2026";
+const ADMIN_PASSWORD = "lcxchx";
 
 const loginScreen = document.getElementById("loginScreen");
 const adminScreen = document.getElementById("adminScreen");
