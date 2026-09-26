@@ -10,8 +10,26 @@
 
   <main class="container">
     <header class="header">
-      <h1>Notre mariage 💍</h1>
-      <p class="subtitle">Partagez les photos que vous avez prises s!</p>
+      <h1 class="title-with-icon">
+        Notre mariage coutumier
+        <svg class="icon-rings" viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f9e79f"/>
+              <stop offset="50%" stop-color="#d4af37"/>
+              <stop offset="100%" stop-color="#a97c1f"/>
+            </linearGradient>
+            <mask id="ringFrontMask">
+              <rect x="0" y="0" width="64" height="40" fill="white"/>
+              <circle cx="40" cy="19" r="16.5" fill="black"/>
+              <circle cx="40" cy="19" r="11.5" fill="white"/>
+            </mask>
+          </defs>
+          <circle cx="26" cy="23" r="14" fill="none" stroke="url(#goldGrad)" stroke-width="5" mask="url(#ringFrontMask)"/>
+          <circle cx="40" cy="19" r="14" fill="none" stroke="url(#goldGrad)" stroke-width="5"/>
+        </svg>
+      </h1>
+      <p class="subtitle">Partagez les photos que vous avez prises !</p>
     </header>
 
     <section class="upload-card">
@@ -34,7 +52,7 @@
         type="text"
         id="nomInvite"
         class="input-nom"
-        placeholder="Votre nom (*optionnel)"
+        placeholder="Votre nom (optionnel)"
       >
 
       <button id="sendBtn" class="btn-send" disabled>Envoyer les photos</button>
@@ -50,6 +68,31 @@
     </section>
 
     <a href="galerie.html" class="link-galerie">Voir la galerie des photos →</a>
+
+    <section class="location-card">
+      <h2 class="location-title">
+        <svg class="icon-pin" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="var(--primary)"/>
+        </svg>
+        Lieu de la fête
+      </h2>
+      <div class="map-wrap">
+        <iframe
+          class="map-frame"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=1.264922,6.173806,1.284922,6.193806&marker=6.183806,1.274922"
+          loading="lazy"
+          title="Carte du lieu de la fête"
+        ></iframe>
+        <a
+          class="map-overlay"
+          href="https://www.google.com/maps/dir/?api=1&destination=6.183806,1.274922"
+          target="_blank"
+          rel="noopener"
+          aria-label="Ouvrir l'itinéraire vers le lieu dans Google Maps"
+        ></a>
+      </div>
+      <p class="map-hint">Touchez la carte pour lancer l'itinéraire depuis votre position</p>
+    </section>
   </main>
 
   <script src="js/config.js"></script>
